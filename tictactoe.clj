@@ -17,20 +17,20 @@
   (get cell :value :empty))
 
 (defn row [state row-index]
-  (filter #(= row-index (get % :row)) state))
+  (filter #(= row-index (:row %)) state))
 
 (defn col [state col-index]
-  (filter #(= col-index (get % :col)) state))
+  (filter #(= col-index (:col %)) state))
 
 (defn diag [state triangular?]
   (if triangular?
-    (filter #(= (get % :col)
-                (get % :row))
+    (filter #(= (:col %)
+                (:row %))
             state)
     ; Diagonal from top right to bottom left.
     (filter #(= (- ROWS 1)
-                (+ (get % :col)
-                   (get % :row)))
+                (+ (:col %)
+                   (:row %)))
             state)))
 
 (defn winner [state]
@@ -56,8 +56,8 @@
     (display-turn value)))
 
 (defn print-board [state]
-  (let [sorted-cells (sort-by #(vec (list (get % :row)
-                                          (get % :col)))
+  (let [sorted-cells (sort-by #(vec (list (:row %)
+                                          (:col %)))
                               state)
         rows (vals (group-by :row sorted-cells))]
     (doseq [row rows]
